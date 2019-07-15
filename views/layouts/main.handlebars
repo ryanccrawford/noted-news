@@ -14,8 +14,24 @@
 </head>
 
 <body>
+    <ul id="dropdown1" class="dropdown-content">
+        <li>Technology</li>
+        <li>World</li>
+        <li>Entertainment</li>
+    </ul>
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper black white-text">
+                <a href="/" class="brand-logo left">News Notes</a>
+                <ul class="right">
+                    <li><a class="white-text">Scrape</a></li>
+                    <li><a class="dropdown-trigger" data-target="dropdown1">Category<i class="material-icons right">arrow_drop_down</i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
     <div class="section">
-    {{{body}}}
+        {{{body}}}
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

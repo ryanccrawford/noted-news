@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-
+    $(".dropdown-trigger").dropdown({ hover: false});
     $.getJSON("/api/articles", function (data) {
         for (var i = 0; i < data.length; i++) {
             var id = data[i]._id
@@ -119,21 +119,22 @@ $(document).ready(function () {
    
     $(document).on("click", "#savenote", function(event) {
         var thisId = $(event.target).parent().parent().attr("data-id")
-        var title = $(event.target).sibling(".titleinput")
+        var title = $(event.target).sibling(".titleinput").val()
+        var body = $(event.target).sibling(".bodyinput").val()
         $.ajax({
-            method: "POST",titleinput
+            method: "POST",
             url: "/api/articles/" + thisId,
             data: {
-                title: $("#").val(),
-                body: $("#bodyinput").val()
+                title: title,
+                body: body
             }
         })
         .then(function (data) {
                 console.log(data);
             $("[data-id=" + data._id + ']').empty();
             });
-        $("#titleinput").val("");
-        $("#bodyinput").val("");
+        $(event.target).sibling(".titleinput").val("")
+        $(event.target).sibling(".bodyinput").val("")
     });
 })
 

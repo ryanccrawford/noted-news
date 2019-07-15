@@ -8,7 +8,6 @@ const regexSummary = /\s.\s(.*)/;
 
 module.exports = function (app) {
 
-
     app.get("/api/scrape/:type", function (req, res) {
         let type = 0
         let categories = ["technology"]
@@ -60,7 +59,6 @@ module.exports = function (app) {
         });
     });
 
-   
     app.get("/api/articles", function (req, res) {
 
         db.Article.find({}).then(function (data) {
