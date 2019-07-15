@@ -133,8 +133,8 @@ $(document).ready(function () {
                 console.log(data);
             $("[data-id=" + data._id + ']').empty();
             });
-        $(event.target).sibling(".titleinput").val("")
-        $(event.target).sibling(".bodyinput").val("")
+        $(event.target).parent().find(".titleinput").val("")
+        $(event.target).parent().find(".bodyinput").val("")
     });
 })
 
