@@ -105,8 +105,8 @@ $(document).ready(function () {
                 )
                 $(note).show()
                     if (data.note) {
-                        $("#titleinput", note).val(data.note.title);
-                        $("#bodyinput", note).val(data.note.body);
+                        $(".titleinput", note).val(data.note.title);
+                        $(".bodyinput", note).val(data.note.body);
                     }
                 });
         }
