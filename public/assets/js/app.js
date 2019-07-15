@@ -1,10 +1,10 @@
 var category = ""
 $(document).ready(function () {
-
+    
     $('select').formSelect();
     $("select").change(function (event) {
 
-        var value = $(event.target).val()
+        var value = $(this).val()
         if (value) {
             $(".scrape").removeClass("disabled").attr("data-val", value)
         } else {
@@ -35,7 +35,7 @@ $(document).ready(function () {
             var link = data[i].link
             var summary = data[i].summary
             var row = $("<div>").addClass("row")
-            var blockCard = $("<div>").addClass("card")
+            var blockCard = $("<div>").addClass("card col m12").attr("data-cardid", id)
             var block = $("<div>")
             if (image) {
                 $(block)
@@ -85,8 +85,8 @@ $(document).ready(function () {
                 .append(
                     $("<a>")
                         .attr("data-id", id)
-                        .addClass("waves-effect yellow waves-dark black-text btn-small add-note right")
-                        .text("Make Note")
+                        .addClass("waves-effect yellow waves-dark black-text btn-small notes right")
+                        .text("Notes")
                         .append(
                             $("<i>")
                                 .addClass("material-icons left")
@@ -100,50 +100,45 @@ $(document).ready(function () {
                 .append(blockCard)
                 .append(
                     $("<div>")
-                        .addClass("card")
+                        .addClass("card col right m3 yellow lighten-3")
                         .addClass("note")
-                        .attr("data-id", id)
+                        .attr("data-noteid", id)
                         .hide()
                 ));
-
+           
         }
     });
 
-    $(document).on("click", ".add-note", function (event) {
-        var articleId = $(event.target).attr("data-id")
-
-        const makecall = function (articleId) {
+    $(document).on("click", ".notes", function (event) {
+        let articleId = $(this).attr("data-id")
+        $('.note[data-noteid=' + articleId + ']').empty()
+        $(this).addClass("disabled")
             $.ajax({
                 method: "GET",
                 url: "/api/articles/" + articleId
             }).then(function (data) {
-                console.log(data);
-                var note = $('.note[data-id=' + articleId + ']')
+                console.log(data[0]);
+                var note = $('.note[data-noteid=' + articleId + ']')
                 $(note)
                     .append(
                         $("<div>").addClass("card-content").append(
-                            $("<p>").text(data.title)
-                        )
+                            $("<p>Title</p>")).append($("<p>"))
                             .append("<input class='titleinput' name='title' >")
                             .append("<textarea class='bodyinput' name='body'></textarea>")
-                            .append("<a class='waves-effect waves-dark white-text btn-small' data-id='" + data._id + "' id='savenote'>Save Note</a>")
-                    )
+                            .append("<a class='save-note waves-effect waves-dark white-text btn-small' data-id='" + articleId + "'>Save Note</a>")
+                )
+                $("div[data-cardid=" + articleId + "]").removeClass("m12").addClass("m8")
                 $(note).show()
-                if (data.note) {
-                    $(".titleinput", note).val(data.note.title);
-                    $(".bodyinput", note).val(data.note.body);
+                if (data[0].note) {
+                    $(".titleinput", note).val(data[0].note.title);
+                    $(".bodyinput", note).val(data[0].note.body);
                 }
             });
-        }
-
-        $(".card.note").hide();
-
-        makecall(articleId)
     });
 
 
-    $(document).on("click", "#savenote", function (event) {
-        var thisId = $(event.target).parent().parent().attr("data-id")
+    $(document).on("click", ".save-note", function (event) {
+        var thisId = $(this).attr("data-id")
         var title = $(event.target).parent().find(".titleinput").val()
         var body = $(event.target).parent().find(".bodyinput").val()
         $.ajax({
@@ -156,10 +151,14 @@ $(document).ready(function () {
         })
             .then(function (data) {
                 console.log(data);
-                $("[data-id=" + data._id + ']').empty();
+                
+              
             });
         $(event.target).parent().find(".titleinput").val("")
         $(event.target).parent().find(".bodyinput").val("")
+        $('.note[data-noteid=' + thisId + ']').empty().hide()
+        $("div[data-cardid=" + thisId + "]").removeClass("m8").addClass("m12")
+        $("a[data-id=" + thisId + "]").removeClass("disabled")
     });
 })
 

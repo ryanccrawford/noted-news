@@ -89,18 +89,11 @@ module.exports = function (app) {
         db.Note.create(req.body)
             .then(function (dbNote) {
                 console.log(dbNote)
-                return db.Artical.findOneAndUpdate({ _id: req.params.id }, {
-                    $push: {
-                        note: dbNote._id
-                    }
-                },
-                    {
-                        new: true
-                    });
+                return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
             })
-            .then(function (dbArtical) {
-                console.log(dbArtical)
-                res.json(dbArtical);
+            .then(function (dbArticle) {
+                console.log(dbArticle)
+                res.json(dbArticle);
             })
             .catch(function (err) {
                 res.json(err);
