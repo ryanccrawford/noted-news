@@ -2,7 +2,7 @@
   "name": "noted-news",
   "version": "1.0.0",
   "description": "News Scraper that lets users comment on the news stories",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
