@@ -1,6 +1,31 @@
+var category = ""
 $(document).ready(function () {
 
-    $(".dropdown-trigger").dropdown({ hover: false});
+    $('select').formSelect();
+    $("select").change(function (event) {
+
+        var value = $(event.target).val()
+        if (value) {
+            $(".scrape").removeClass("disabled").attr("data-val", value)
+        } else {
+            $(".scrape").addClass("disabled").attr("data-val", "-1")
+        }
+
+    })
+    $(".scrape").on("click", function (event) {
+        var cat = $("select").val()
+        var cat2 = $(".scrape").attr("data-id")
+
+        $.ajax({
+            url: "/api/scrape/" + cat,
+            method: "GET"
+        }).then(function (data) {
+            console.log(data)
+            window.location.reload()
+         })
+
+    })
+
     $.getJSON("/api/articles", function (data) {
         for (var i = 0; i < data.length; i++) {
             var id = data[i]._id
@@ -17,60 +42,60 @@ $(document).ready(function () {
                     .addClass("card-image")
                     .append(
                         $("<img>")
-                        .addClass("auto-height")
-                        .attr("src", image)
+                            .addClass("auto-height")
+                            .attr("src", image)
                     )
                 $(blockCard)
                     .append(block)
                     .append(
                         $("<div>")
-                        .addClass("card-content")
-                        .append(
-                            $("<span>")
-                            .addClass("card-title text-blue lighten-4")
-                            .text(title))
-                        .append(
-                            $("<p>")
-                            .text(summary)
+                            .addClass("card-content")
+                            .append(
+                                $("<span>")
+                                    .addClass("card-title text-blue lighten-4")
+                                    .text(title))
+                            .append(
+                                $("<p>")
+                                    .text(summary)
+                            )
                     )
-                )
 
             } else {
                 $(block)
                     .addClass("card-content")
                     .append(
-                    $("<span>")
-                        .addClass("card-title")
-                        .text(title))
+                        $("<span>")
+                            .addClass("card-title")
+                            .text(title))
                     .append(
-                    $("<p>")
-                        .text(summary)
+                        $("<p>")
+                            .text(summary)
                     )
                 $(blockCard)
                     .append(block)
             }
-            
+
             var blockLink = $("<div>")
                 .addClass("card-action")
                 .append(
                     $("<a>")
-                    .addClass("waves-effect green waves-dark white-text btn-small")
-                    .attr("href", link)
-                    .text("Read more..."))
+                        .addClass("waves-effect green waves-dark white-text btn-small")
+                        .attr("href", link)
+                        .text("Read more..."))
                 .append(
                     $("<a>")
-                    .attr("data-id", id)
-                    .addClass("waves-effect yellow waves-dark black-text btn-small add-note right")
-                    .text("Make Note")
+                        .attr("data-id", id)
+                        .addClass("waves-effect yellow waves-dark black-text btn-small add-note right")
+                        .text("Make Note")
                         .append(
-                        $("<i>")
-                            .addClass("material-icons left")
-                            .text("note")
+                            $("<i>")
+                                .addClass("material-icons left")
+                                .text("note")
                         )
                 )
 
             $(blockCard).append(blockLink)
-                
+
             $("#articles").append($(row)
                 .append(blockCard)
                 .append(
@@ -86,29 +111,29 @@ $(document).ready(function () {
 
     $(document).on("click", ".add-note", function (event) {
         var articleId = $(event.target).attr("data-id")
-        
+
         const makecall = function (articleId) {
             $.ajax({
                 method: "GET",
                 url: "/api/articles/" + articleId
             }).then(function (data) {
-                    console.log(data);
-                    var note = $('.note[data-id=' + articleId + ']')
-                    $(note)
-                        .append(
+                console.log(data);
+                var note = $('.note[data-id=' + articleId + ']')
+                $(note)
+                    .append(
                         $("<div>").addClass("card-content").append(
                             $("<p>").text(data.title)
                         )
                             .append("<input class='titleinput' name='title' >")
                             .append("<textarea class='bodyinput' name='body'></textarea>")
                             .append("<a class='waves-effect waves-dark white-text btn-small' data-id='" + data._id + "' id='savenote'>Save Note</a>")
-                )
+                    )
                 $(note).show()
-                    if (data.note) {
-                        $(".titleinput", note).val(data.note.title);
-                        $(".bodyinput", note).val(data.note.body);
-                    }
-                });
+                if (data.note) {
+                    $(".titleinput", note).val(data.note.title);
+                    $(".bodyinput", note).val(data.note.body);
+                }
+            });
         }
 
         $(".card.note").hide();
@@ -116,11 +141,11 @@ $(document).ready(function () {
         makecall(articleId)
     });
 
-   
-    $(document).on("click", "#savenote", function(event) {
+
+    $(document).on("click", "#savenote", function (event) {
         var thisId = $(event.target).parent().parent().attr("data-id")
-        var title = $(event.target).sibling(".titleinput").val()
-        var body = $(event.target).sibling(".bodyinput").val()
+        var title = $(event.target).parent().find(".titleinput").val()
+        var body = $(event.target).parent().find(".bodyinput").val()
         $.ajax({
             method: "POST",
             url: "/api/articles/" + thisId,
@@ -129,9 +154,9 @@ $(document).ready(function () {
                 body: body
             }
         })
-        .then(function (data) {
+            .then(function (data) {
                 console.log(data);
-            $("[data-id=" + data._id + ']').empty();
+                $("[data-id=" + data._id + ']').empty();
             });
         $(event.target).parent().find(".titleinput").val("")
         $(event.target).parent().find(".bodyinput").val("")

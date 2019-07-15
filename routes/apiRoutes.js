@@ -10,7 +10,7 @@ module.exports = function (app) {
 
     app.get("/api/scrape/:type", function (req, res) {
         let type = 0
-        let categories = ["technology"]
+        let categories = ["technology", "science","world"]
         if (req.params.type) {
             type = parseInt(req.params.type) - 1
         }
@@ -27,13 +27,14 @@ module.exports = function (app) {
                 var link = $(".item-info h2.title", element).find("a").attr("href")
                 var date = $(element).find(".item-info").find("p.teaser").text().split(regexDate)[1]
                 var summary = $(element).find(".item-info").find("p.teaser").text().split(regexSummary)[1]
-            
+                
                 var result = {
                     title: title,
                     link: link,
                     summary: summary,
                     image: image,
-                    date: date
+                    date: date,
+                    category: type.toString()
                 };
                 newCollection.push(result);
                 console.log(result || "No data")
@@ -74,6 +75,7 @@ module.exports = function (app) {
         })
             .populate("note")
             .then(function (data) {
+                console.log(data)
                 res.json(data);
             })
             .catch(function (err) {
@@ -85,6 +87,7 @@ module.exports = function (app) {
 
         db.Note.create(req.body)
             .then(function (dbNote) {
+                console.log(dbNote)
                 return db.Artical.findOneAndUpdate({ _id: req.params.id }, {
                     $push: {
                         note: dbNote._id
@@ -95,6 +98,7 @@ module.exports = function (app) {
                     });
             })
             .then(function (dbArtical) {
+                console.log(dbArtical)
                 res.json(dbArtical);
             })
             .catch(function (err) {

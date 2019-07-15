@@ -14,18 +14,23 @@
 </head>
 
 <body>
-    <ul id="dropdown1" class="dropdown-content">
-        <li>Technology</li>
-        <li>World</li>
-        <li>Entertainment</li>
-    </ul>
-    <div class="navbar-fixed">
+     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper black white-text">
                 <a href="/" class="brand-logo left">News Notes</a>
                 <ul class="right">
-                    <li><a class="white-text">Scrape</a></li>
-                    <li><a class="dropdown-trigger" data-target="dropdown1">Category<i class="material-icons right">arrow_drop_down</i></a></li>
+                    <li><a data-val="-1" class="scrape white-text disabled">Scrape</a></li>
+                    <li>
+                        <div class="active input-field">
+                            <select>
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="1">Technology</option>
+                                <option value="2">Science</option>
+                                <option value="3">World</option>
+                            </select>
+                            <label>Category Selection</label>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </nav>
