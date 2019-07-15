@@ -1,9 +1,9 @@
 var category = ""
 $(document).ready(function () {
     
-    $('select').formSelect();
+    $('select').formSelect({ classes: "white"});
     $("select").change(function (event) {
-
+    $('.tooltipped').tooltip();
         var value = $(this).val()
         if (value) {
             $(".scrape").removeClass("disabled").attr("data-val", value)
