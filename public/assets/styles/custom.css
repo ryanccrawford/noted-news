@@ -1,0 +1,18 @@
+body {
+    background-color: lightblue
+}
+
+.auto-height{
+
+    height:100% !important;
+    width:auto !important;
+}
+
+.note{
+    background-color: lightyellow;
+
+}
+
+input.note, textarea.note {
+    width: 100%;
+}
