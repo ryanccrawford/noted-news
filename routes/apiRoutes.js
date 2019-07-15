@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
-mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
+const dburl = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines"
+mongoose.connect(dburl, { useNewUrlParser: true });
 const db = require("../models");
 const axios = require("axios")
 const cheerio = require("cheerio")
