@@ -2,6 +2,12 @@
 
 You can see a demo of this site here https://news.ryancrawford.me
 
+
+![Demo][Demo]
+
+[Demo]: https://media.giphy.com/media/kZoYlMkjWbSjG1UzYK/giphy.gif "Demo"
+
+
 NPR News Scraper lets users comment on news stories that have been scraped from the NPR website using a custom web scraper.
 The app uses a Mongo DB database to store the scraped data. The data that is collected is:
 - The Title or Headline
